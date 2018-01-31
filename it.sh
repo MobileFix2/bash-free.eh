@@ -23,48 +23,8 @@ fi
 	source="https://raw.githubusercontent.com/cy-ber/crime"
 
 
-# go to root
-cd
 
-# check registered ip
-wget -q -O IP $source/debian7/IP.txt
-if ! grep -w -q $MYIP IP; then
-	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
-        echo "     
-
-                       
-               =============== OS-32 & 64-bit ================
-               ♦                                             ♦
-               ♦   AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH    ♦
-	       ♦                     &                       ♦
-	       ♦                - BLANGKON -                 ♦
-               ♦       -----------About Us------------       ♦ 
-               ♦            Tel : +6282139743432             ♦
-               ♦         { Sms/whatsapp/telegram }           ♦ 
-               ♦       http://facebook.com/t34mh4ck3r        ♦    
-               ♦     http://www.facebook.com/t34mh4ck3r      ♦
-               ♦                                             ♦
-               =============== OS-32 & 64-bit ================
-               
-                 Please make payment before use auto script
-                 ..........................................
-                 .        Price: Rp.20.000 = 1IP          .
-                 .          *****************             .
-                 .           My-bank Account              .
-                 .          =================             .
-                 .         No   : Hubungi admin           .
-                 .         Name : YUSUF ARDIANSYAH        .
-                 ..........................................   
-                          Thank You For Choice Us"
-
-	echo "        Hubungi: editor ( Yusuf Ardiansyah)"
 	
-	rm /root/IP
-	rm it.sh
-	rm -f /root/IP
-	exit
-fi
-
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
