@@ -23,7 +23,8 @@ fi
 	source="https://raw.githubusercontent.com/cy-ber/crime"
 
 
-
+# root
+cd
 	
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
