@@ -1,0 +1,74 @@
+# VNSTAT
+apt-get install vnstat -y
+cd /home/vps/public_html/
+wget https://raw.githubusercontent.com/GegeEmbrie/autosshvpn/master/file/vnstat_php_frontend-1.5.1.tar.gz
+tar xf vnstat_php_frontend-1.5.1.tar.gz
+rm vnstat_php_frontend-1.5.1.tar.gz
+mv vnstat_php_frontend-1.5.1 vnstat
+cd vnstat
+if [[ `ifconfig -a | grep "venet0"` ]]
+then
+cekvirt='OpenVZ'
+elif [[ `ifconfig -a | grep "venet0:0"` ]]
+then
+cekvirt='OpenVZ'
+elif [[ `ifconfig -a | grep "venet0:0-00"` ]]
+then
+cekvirt='OpenVZ'
+elif [[ `ifconfig -a | grep "venet0-00"` ]]
+then
+cekvirt='OpenVZ'
+elif [[ `ifconfig -a | grep "eth0"` ]]
+then
+cekvirt='KVM'
+elif [[ `ifconfig -a | grep "eth0:0"` ]]
+then
+cekvirt='KVM'
+elif [[ `ifconfig -a | grep "eth0:0-00"` ]]
+then
+cekvirt='KVM'
+elif [[ `ifconfig -a | grep "eth0-00"` ]]
+then
+cekvirt='KVM'
+fi
+if [ $cekvirt = 'KVM' ]; then
+	sed -i 's/eth0/eth0/g' config.php
+	sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
+	sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
+	sed -i 's/Internal/Internet/g' config.php
+	sed -i '/SixXS IPv6/d' config.php
+	cd
+elif [ $cekvirt = 'OpenVZ' ]; then
+	sed -i 's/eth0/venet0/g' config.php
+	sed -i "s/\$iface_list = array('venet0', 'sixxs');/\$iface_list = array('venet0');/g" config.php
+	sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
+	sed -i 's/Internal/Internet/g' config.php
+	sed -i '/SixXS IPv6/d' config.php
+	cd
+else
+	cd
+fi
+# Ddos deflate
+wget -O- https://raw.githubusercontent.com/stylersnico/nmd/master/debian/install.sh | sh
+wget -O- https://raw.githubusercontent.com/stylersnico/nmd/master/debian/update.sh | sh
+# block all port except
+#sed -i '$ i\iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -d 127.0.0.1 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 22 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 5555 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 81 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 1922 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 22507 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 143 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 3128 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 8000 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 8080 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp --dport 10000 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p udp -m udp --dport 2500 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p udp -m udp --dport 7300 -j ACCEPT' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p udp -m udp -j DROP' /etc/rc.local
+#sed -i '$ i\iptables -A OUTPUT -p tcp -m tcp -j DROP' /etc/rc.local
